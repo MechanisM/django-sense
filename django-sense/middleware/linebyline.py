@@ -67,7 +67,8 @@ def show_func(filename, start_lineno, func_name, timings, unit):
     return results
 
 def show_text(stats, unit):
-    """ Show text for the given timings.
+    """
+    Show text for the given timings.
     """
     results = []
     for (fn, lineno, name), timings in sorted(stats.items()):
@@ -78,11 +79,16 @@ def show_text(stats, unit):
 class LineByLine(object):
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        request.devserver_profiler = LineProfiler()
-        request.devserver_profiler_run = True
+        if (settings.DEBUG or request.user.is_superuser) and request.REQUEST.has_key('line'):
+            request.devserver_profiler = LineProfiler()
+            request.devserver_profiler_run = True
 
-        _unwrap_closure_and_profile(request.devserver_profiler, view_func)
-        request.devserver_profiler.enable_by_count()
+            request.devserver_profiler.enable_by_count()
+            _unwrap_closure_and_profile(request.devserver_profiler, view_func)
+
+    def process_complete(self, request):
+        if (settings.DEBUG or request.user.is_superuser) and request.REQUEST.has_key('line'):
+            request.devserver_profiler.disable_by_count()
 
     def process_response(self, request, response):
         if (settings.DEBUG or request.user.is_superuser) and request.REQUEST.has_key('line'):
@@ -100,8 +106,16 @@ class LineByLine(object):
 def _unwrap_closure_and_profile(profiler, func):
     if not hasattr(func, 'func_code'):
         return
-    profiler.add_function(func)
+
+    # Don't profile decorators
+    if func.func_code.co_name != '_wrapped_view' and func.func_name != '<lambda>':
+        profiler.add_function(func)
+
+    # Decorators store their wrapped functions in the
+    # func_closure, and only decorators have this non-null
     if func.func_closure:
         for cell in func.func_closure:
             if hasattr(cell.cell_contents, 'func_code'):
-                _unwrap_closure_and_profile(profiler, cell.cell_contents)
+                # not a decorator
+                if cell.cell_contents.func_name != 'lambda':
+                    _unwrap_closure_and_profile(profiler, cell.cell_contents)
