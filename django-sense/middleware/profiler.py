@@ -90,10 +90,12 @@ class ProfileMiddleware(object):
 
                 if """of 'file' objects""" in callname:
                     myclasses['diskio'] += time
+                    mydiskio[callname] += time
 
                 # TODO: support for mysql and sqlite
                 elif """of 'psycopg2._psycopg.cursor'""" in callname:
                     myclasses['sql'] += time
+                    mysql[callname] += time
                 else:
                     myclasses['cpython'] += time
 
@@ -120,6 +122,10 @@ class ProfileMiddleware(object):
                     mystats[filename] = 0
                 mystats[filename] += time
 
+
+                if 'django' in filename:
+                    mydjango[filename] += time
+
                 # Groups
                 group = self.get_group(filename)
                 if not group in mygroups:
@@ -139,15 +145,11 @@ class ProfileMiddleware(object):
                     if module == 'django':
                         myclasses['django'] += time
 
-                    # Some Django module
-                    else:
-                        myclasses['django'] += time
-
-
                 # standard library
                 elif stdlib_package:
                     module = stdlib_package.groupdict().get('module', None)
                     myclasses['stdlib'] += time
+                    mystdlib[module] += time
 
                 # business logic
                 else:
