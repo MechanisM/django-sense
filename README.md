@@ -9,8 +9,44 @@ The main features are:
 Credits:
 --------
 
-django-clue - Template & Query profilers.
-django-devserver - Inspired the line by line profiler.
+* `line-profiler` - The C backend for line-by-line profiling.
+* `django-clue` - Template & Query profilers.
+* `django-devserver` - Inspired the line by line profiler.
+
+URL Patterns
+------------
+
+PROFILE SNAPSHOT - `localhost:8000/foo/bar/?prof`
+LINE BY LINE PROFILE - `localhost:8000/foo/bar/?line`
+TEMPLATE USAGE - `localhost:8000/foo/bar/?template`
+QUERY USAGE - `localhost:8000/foo/bar/?query`
+
+Usage
+-----
+
+    INSTALLED_APPS = (
+        ...
+       'django-sense',
+       ...
+    )
+
+    MIDDLEWARE_CLASSES = (
+        'django-sense.middleware.query.QueryMiddleware',
+        'django-sense.middleware.profiler.ProfileMiddleware',
+        'django-sense.middleware.template.TemplateMiddleware',
+        'django-sense.middleware.linebyline.LineByLine',
+    )
+
+Caveats
+------------
+
+Line by line profiling tries its best to figure out which view
+function you want to profile, but it can fail in some convoluted
+call stacks. 
+
+The profile snapshots are also done by cProfile which means that
+multithreaded code ( gevent, psyco, eventlet ) may not be profile
+properly single cProfile is not threadsafe.
 
 License:
 --------
