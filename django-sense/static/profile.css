@@ -1,0 +1,55 @@
+body {
+    font-family: sans-serif;
+}
+
+.holder {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -webkit-box-shadow: 0 1px 3px #666;
+    margin-bottom: 10px;
+    width: 50%;
+    height: 200px;
+    float: left;
+    overflow: hidden;
+}
+
+hr {
+    clear: both;
+    height: 0px;
+    border: 0px;
+}
+
+h1 {
+    width: 100%;
+    border: 1px solid gray;
+    text-align: center;
+    font-size: 10pt;
+    cursor: pointer;
+}
+
+table {
+    font-size: 8pt;
+}
+
+.code {
+    padding-left: 25px;
+}
+
+#codemap {
+    padding: 0px;
+    border-collapse: collapse;
+}
+
+#codemap td {
+    margin: 0px;
+    padding: 0px 15px 0px 15px;
+}
+
+#codemap tr {
+    padding: 0px;
+    margin: 0px;
+}
+
+#codemap pre {
+    margin: 0px;
+}

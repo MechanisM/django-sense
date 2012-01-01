@@ -1,0 +1,148 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8">
+        <title>Profile</title>
+        <link rel="stylesheet" href="/static/profile.css" media="screen"> 
+        <script src="/static/raphael.js"></script>
+        <script src="/static/g.raphael.js"></script>
+        <script src="/static/g.pie.js"></script>
+        <script src="/static/underscore.js"></script>
+        <script src="/static/jquery.js"></script>
+        <script>
+
+            function make_chart(id, title, data, labels) {
+                var r = Raphael(id);
+
+                var pie = r.piechart(100, 100, 50, data,
+                    {
+                        legend: labels,
+                    }
+                )
+
+                r.text(100, 10, title).attr({ font: "20px sans-serif"});
+                pie.hover(function () {
+                    this.sector.stop();
+                    this.sector.scale(1.1, 1.1, this.cx, this.cy);
+
+                    if (this.label) {
+                        this.label[0].stop();
+                        this.label[0].attr({ r: 7.5 });
+                        this.label[1].attr({ "font-weight": 800 });
+                    }
+                }, function () {
+                    this.sector.animate({ transform: 's1 1 ' + this.cx + ' ' + this.cy }, 500, "bounce");
+ 
+                    if (this.label) {
+                        this.label[0].animate({ r: 5 }, 500, "bounce");
+                        this.label[1].attr({ "font-weight": 400 });
+                    }
+                });
+            }
+
+            function make_table(titles, data) {
+                var data = _.zip(_.keys(data), _.values(data));
+                var str = '<table class="lightPro">';
+                str += '<tr>';
+
+                for (var title in titles) {
+                    str += '<th scope="col">' + titles[title] + '</th>';
+                }
+
+                str += '</tr>';
+                str += '<tbody>';
+                for (var i = 0; i < data.length; i++) {
+                    str += (i % 2 == 0) ? '<tr class="alt">' : '<tr>';
+                    for (var index in data[i]) {
+                        str += '<td>' + data[i][index] + '</td>';
+                    }
+                    str += '</tr>';
+                }
+                str += '</tbody>';
+                str += '</table>';
+                return str;
+            }
+
+            function visualize_calls(chart_id, table_id, title, dataset) {
+                if (_.isEmpty(dataset)) {
+                    dataset = {'none': 0}
+                }
+                make_chart(chart_id, title, _.values(dataset), _.keys(dataset));
+                $(table_id).html(make_table(['function','total time'], dataset ));
+            }
+
+            window.onload = function () {
+                visualize_calls('chart3'  , ' #data3'  , 'Business Logic'   , profiles['business']);
+                visualize_calls('chart5'  , ' #data5'  , 'By Class'         , profiles['byclass']);
+                visualize_calls('chart4'  , ' #data4'  , 'By File'          , profiles['byfile']);
+                visualize_calls('chart10' , ' #data10' , 'By Group'         , profiles['bygroup']);
+                visualize_calls('chart6'  , ' #data6'  , 'By Package'       , profiles['bypackage']);
+
+                visualize_calls('chart1'  , ' #data1'  , 'CPython'          , profiles['cython']);
+                visualize_calls('chart9'  , ' #data9'  , 'Disk IO'          , profiles['diskio']);
+                visualize_calls('chart7'  , ' #data7'  , 'Django'           , profiles['django']);
+                visualize_calls('chart8'  , ' #data8'  , 'SQL'              , profiles['sql']);
+                visualize_calls('chart2'  , ' #data2'  , 'Standard Library' , profiles['stdlib']);
+
+                $("h1").click(function() {
+                    $("#rawdump").toggle()
+                });
+            };
+
+        </script>
+    </head>
+    <body>
+        <div id="chart1" class="holder"></div>
+        <div id="data1"></div>
+        <hr/>
+
+        <div id="chart2" class="holder"></div>
+        <div id="data2"></div>
+        <hr/>
+
+        <div id="chart3" class="holder"></div>
+        <div id="data3"></div>
+        <hr/>
+
+        <div id="chart4" class="holder"></div>
+        <div id="data4"></div>
+        <hr/>
+
+        <div id="chart5" class="holder"></div>
+        <div id="data5"></div>
+        <hr/>
+
+        <div id="chart6" class="holder"></div>
+        <div id="data6"></div>
+        <hr/>
+        
+        <div id="chart7" class="holder"></div>
+        <div id="data7"></div>
+        <hr/>
+
+        <div id="chart8" class="holder"></div>
+        <div id="data8"></div>
+        <hr/>
+
+        <div id="chart9" class="holder"></div>
+        <div id="data9"></div>
+        <hr/>
+
+        <div id="chart10" class="holder"></div>
+        <div id="data10"></div>
+        <hr/>
+
+    </body>
+
+    <h1>Raw Dump</h1>
+    <div id="rawdump" style="display: none">
+        <pre>
+        {{raw_dump}}
+        {{raw_json}}
+        </pre>
+    </div>
+
+    <script>
+        var profiles = {{profiles|safe}};
+    </script>
+</html>

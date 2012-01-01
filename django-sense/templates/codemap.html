@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Profile</title>
+        <link rel="stylesheet" href="/static/profile.css" media="screen"> 
+        <script src="/static/jquery.js"></script> 
+        <script>
+            window.onload = function () {
+                lines = code_map;
+                for(var i in lines) {
+                    var rows = lines[i];
+                    var $row = $("<tr></tr)");
+                    for(col in rows) {
+                        var row= rows[col];
+                        
+                        // Code line
+                        if(col == rows.length - 1) {
+                            var $col = $( "<td class='code'><pre>" + row + "</pre></td>");
+                            $row.append($col);
+                            var heat = parseInt(rows[rows.length - 2]) || 0;
+                            var heat_v = heat/100;
+                            console.log(heat_v);
+
+                            console.log(heat_v);
+                            $col.css('background',
+                                'rgba(' + 255 + ',' +
+                                0 + ',' +
+                                0 + ',' +
+                                heat_v + ')'
+                            );
+
+                        // Data line
+                        } else {
+                            $row.append($(
+                                "<td>" + row + "</td>"
+                            ));
+                        }
+                    }
+                    $("#codemap").append($row);
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <table id="codemap">
+        <tr>
+            <th>Line #</th>
+            <th>Hits</th>
+            <th>Time (ticks)</th>
+            <th>Per Hit</th>
+            <th>% Time</th>
+            <th>Line Contents</th>
+        </tr>
+        </table>
+    </body>
+    <script>
+        var code_map = {{json|safe}}[0];
+    </script>
+</html>
