@@ -17,8 +17,11 @@ URL Patterns
 ------------
 
 PROFILE SNAPSHOT - `localhost:8000/foo/bar/?prof`
+
 LINE BY LINE PROFILE - `localhost:8000/foo/bar/?line`
+
 TEMPLATE USAGE - `localhost:8000/foo/bar/?template`
+
 QUERY USAGE - `localhost:8000/foo/bar/?query`
 
 Usage
