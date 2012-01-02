@@ -6,6 +6,10 @@ The main features are:
   browser.
 * Graphical frontend to cProfile snapshots. 
 
+![profiler](https://raw.github.com/sdiehl/django-sense/master/django-sense/docs/profiler.png)
+
+![codemap](https://raw.github.com/sdiehl/django-sense/master/django-sense/docs/codemap.png)
+
 Credits:
 --------
 
