@@ -19,7 +19,11 @@ setup(
   install_requires=install_requires,
   packages=find_packages(),
   package_data={
-    'django_sense': ['templates/django_sense/*.html']
+    'django_sense': [
+        'templates/django_sense/*.html',
+        'static/*.js',
+        'static/*.css',
+    ]
   },
   zip_safe=False,
   include_package_data=True,
