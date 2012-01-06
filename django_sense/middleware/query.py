@@ -62,7 +62,7 @@ class QueryMiddleware:
                 'server_time': time.time() - self.time_started,
             })
 
-            response.content = get_template('queries.html').render(template_context)
+            response.content = get_template('django_sense/queries.html').render(template_context)
 
         return response
 

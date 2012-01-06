@@ -45,7 +45,7 @@ class TemplateMiddleware:
 
     def process_response(self, request, response):
         if (settings.DEBUG or request.user.is_superuser) and request.REQUEST.has_key('template'):
-            display = get_template('templates.html')
+            display = get_template('django_sense/templates.html')
 
             pp = pprint.PrettyPrinter()
 

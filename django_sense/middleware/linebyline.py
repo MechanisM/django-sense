@@ -95,7 +95,7 @@ class LineByLine(object):
             pstats = request.devserver_profiler.get_stats()
             stats = show_text(pstats.timings, pstats.unit)
 
-            t = get_template('codemap.html')
+            t = get_template('django_sense/codemap.html')
             html = t.render(Context({
                 'json': simplejson.dumps(stats)
             }))

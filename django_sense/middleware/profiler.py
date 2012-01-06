@@ -197,7 +197,7 @@ class ProfileMiddleware(object):
             # Our profiler dump
             profiles =  self.summary_for_files(stats_str)
 
-            t = get_template('profile.html')
+            t = get_template('django_sense/profile.html')
             html = t.render(Context({
                 'raw_dump': raw_dump,
                 'raw_json': simplejson.dumps(profiles, indent=4),
