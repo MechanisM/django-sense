@@ -20,6 +20,9 @@ Credits:
 URL Patterns
 ------------
 
+To profile your view append one of the patterns on to the end of
+your url.
+
 PROFILE SNAPSHOT - `localhost:8000/foo/bar/?prof`
 
 LINE BY LINE PROFILE - `localhost:8000/foo/bar/?line`
@@ -33,15 +36,15 @@ Usage
 
     INSTALLED_APPS = (
         ...
-       'django-sense',
-       ...
+        'django_sense',
+        ...
     )
 
     MIDDLEWARE_CLASSES = (
-        'django-sense.middleware.query.QueryMiddleware',
-        'django-sense.middleware.profiler.ProfileMiddleware',
-        'django-sense.middleware.template.TemplateMiddleware',
-        'django-sense.middleware.linebyline.LineByLine',
+        'django_sense.middleware.query.QueryMiddleware',
+        'django_sense.middleware.profiler.ProfileMiddleware',
+        'django_sense.middleware.template.TemplateMiddleware',
+        'django_sense.middleware.linebyline.LineByLine',
     )
 
 Caveats
@@ -52,8 +55,8 @@ function you want to profile, but it can fail in some convoluted
 call stacks. 
 
 The profile snapshots are also done by cProfile which means that
-multithreaded code ( gevent, psyco, eventlet ) may not be profile
-properly single cProfile is not threadsafe.
+multithreaded code ( gevent, psyco, eventlet ) may not profile
+properly since cProfile is not threadsafe.
 
 License:
 --------
