@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Profile</title>
+        <link rel="stylesheet" href="/static/profile.css" media="screen"> 
+        <script src="/static/raphael.js"></script>
+        <script src="/static/g.raphael.js"></script>
+        <script src="/static/g.pie.js"></script>
+        <script src="/static/underscore.js"></script>
+        <script src="/static/jquery.js"></script>
+    </head>
+    <body>
+        Server-time taken: {{ server_time|floatformat:"5" }} seconds
+
+        <h3>Templates used:</h3>
+
+        {% if templates %}
+        {% for template in templates %}
+            <div class="holder">
+                <h3>{{ template.0 }}</h3>
+                <h4>Path </h4><code>{{ template.1 }}</code>
+                <h4>Context:</h4>
+                <pre>{{ template.2 }}</pre>
+            </div>
+        {% endfor %}
+        {% else %}
+            <li>None</li>
+        {% endif %}
+
+        <h3>Template paths:</h3>
+
+        <ul>
+        {% if template_dirs %}
+        {% for template in template_dirs %}
+            <li>{{ template }}</li>
+        {% endfor %}
+        {% else %}
+            <li>None</li>
+        {% endif %}
+        </ul>
+
+    </body>
+</html>

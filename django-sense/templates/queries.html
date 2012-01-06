@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Profile</title>
+        <link rel="stylesheet" href="/static/profile.css" media="screen"> 
+        <script src="/static/raphael.js"></script>
+        <script src="/static/g.raphael.js"></script>
+        <script src="/static/g.pie.js"></script>
+        <script src="/static/underscore.js"></script>
+        <script src="/static/jquery.js"></script>
+    </head>
+    <body>
+        <pre>
+        Server-time taken: {{ server_time|floatformat:"5" }} seconds
+
+        {{ sql|length }} SQL queries executed in {{ sql_total }} seconds ({{ bad_sql_count }} queries took longer than 0.01):
+        {% if sql %}{% for query in sql %}
+            {{ query.sql|linebreaksbr }} 
+            took {% if query.bad %}{% endif %}{{ query.time|floatformat:"3" }} seconds{% if query.bad %} LONGQ{% endif %} 
+        {% endfor %}
+        {% if most_executed %}
+        {{ most_executed|length }} most frequently executed queries:
+        {% for pair in most_executed %} 
+            {{ pair.0|linebreaksbr }}
+            executed {{ pair.1|length }} times
+        {% endfor %}{% endif %}{% else %}
+        None{% endif %}
+        </pre>
+    </body>
+</html>
